@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+// Use environment variable or fallback to relative path
+const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
+
 function App() {
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState('');
@@ -11,10 +14,10 @@ function App() {
   }, []);
 
   const fetchNotes = () => {
-    fetch('http://localhost:8000/api/notes/')
+    fetch(`${API_BASE}/notes/`)
       .then(res => res.json())
       .then(data => setNotes(data))
-      .catch(err => console.error(err));
+      .catch(err => console.error('Fetch error:', err));
   };
 
   const handleSubmit = (e) => {
@@ -22,7 +25,7 @@ function App() {
 
     const newNote = { title, content };
 
-    fetch('http://localhost:8000/api/notes/', {
+    fetch(`${API_BASE}/notes/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -35,7 +38,7 @@ function App() {
         setTitle('');
         setContent('');
       })
-      .catch(err => console.error("Error:", err));
+      .catch(err => console.error("Post error:", err));
   };
 
   return (
