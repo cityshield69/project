@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 // Use environment variable or fallback to relative path
 const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
 
-function App() {
+async function App() {
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -20,26 +20,29 @@ function App() {
       .catch(err => console.error('Fetch error:', err));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newNote = { title, content };
 
-    fetch(`${API_BASE}/notes/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newNote),
-    })
-      .then(res => res.json())
-      .then(data => {
-        setNotes(prevNotes => [...prevNotes, data]); // Add new note to UI
-        setTitle('');
-        setContent('');
-      })
-      .catch(err => console.error("Post error:", err));
+    try {
+      const response = await fetch(`${API_BASE}/notes/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newNote),
+      });
+
+      const data = await response.json();
+      setNotes(prevNotes => [...prevNotes, data]); // Add new note to UI
+      setTitle('');
+      setContent('');
+    } catch (err) {
+      console.error("Post error:", err);
+    }
   };
+
 
   return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
