@@ -74,7 +74,9 @@ TEMPLATES = [
         },
     },
 ]
-TEMPLATES[0]['DIRS'] = [os.path.join(BASE_DIR, 'frontend')]
+TEMPLATES[0]['DIRS'] = [
+    os.path.join(BASE_DIR, 'frontend', 'build')
+]
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
@@ -126,7 +128,9 @@ USE_TZ = True
 # STATIC_URL = 'static/'
 # STATICFILES_DIRS = [BASE_DIR / "frontend" / "static"]
 # STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend')]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend', 'build', 'static'),
+]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 # Default primary key field type
